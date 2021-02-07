@@ -30,6 +30,7 @@ import java.util.Map;
 @Api(tags = "讲师管理")
 @RestController
 @RequestMapping("/eduservice/teacher")
+@CrossOrigin
 public class EduTeacherController {
     //把list集合返回，形式是json数据
     //把service注入
@@ -66,12 +67,6 @@ public class EduTeacherController {
     public R pageListTeacher
     (@PathVariable long current, @PathVariable long limit) {
 
-        try {
-            int i = 10 / 0;
-        } catch (Exception e) {
-            //执行自定义异常
-            throw new GuliException(2001, "执行了自定义异常处理");
-        }
 
         //创建page对象
         Page<EduTeacher> pageTeacher = new Page<>(current, limit);
@@ -130,6 +125,8 @@ public class EduTeacherController {
             wrapper.le("gmt_create", end);
         }
 
+        //排序
+        wrapper.orderByDesc("gmt_create");
 
         //调用方法实现条件查询分页
         teacherService.page(pageTeacher, wrapper);
